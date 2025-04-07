@@ -7,21 +7,24 @@ import os
 import time
 
 # Configuração da API
-url = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+url = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 headers = {
-    "Authorization": "Bearer xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    "Authorization": "Bearer xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 }
 
 # Configuração do servidor de e-mail
-SMTP_SERVER = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+SMTP_SERVER = "xxxxxxxxxxxxxxxx"
 SMTP_PORT = 587
-EMAIL_SENDER = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-EMAIL_PASSWORD = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-EMAIL_RECIPIENTS = ["xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
-EMAIL_SUBJECT = "xxxxxxxxxxxxxxxxxxxxxxx"
+EMAIL_SENDER = "xxxxxxxxxxxxxxxxxxxx"
+EMAIL_PASSWORD = "xxxxxxxxxxxxxxx"
+EMAIL_RECIPIENTS = ["xxxxxxxxxxxxxxxxxxxxxxx"]
+EMAIL_SUBJECT = "Novos Leads Alvocom"
 
 # Arquivo onde os leads já enviados serão armazenados
 ID_STORAGE_FILE = "enviados.json"
+
+# Tratamento do horário
+horario_local = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 # Carrega os leads que já foram enviados (ID, Nome e E-mail).
 def carregar_leads_enviados():
@@ -82,7 +85,7 @@ def noRepeatEmail():
 
         # Se não houver novos leads, não envia e-mail
         if not novos_leads:
-            print("Nenhum novo lead encontrado. Nenhum e-mail será enviado.")
+            print(f"({horario_local}) Nenhum novo lead encontrado. Nenhum e-mail será enviado.")
             time.sleep(5)
             return
 
@@ -106,9 +109,8 @@ def noRepeatEmail():
             server.starttls()
             server.login(EMAIL_SENDER, EMAIL_PASSWORD)
             server.sendmail(EMAIL_SENDER, EMAIL_RECIPIENTS, msg.as_string())
-
-        print("E-mail enviado com sucesso!")
-        time.sleep(5)
+            print(f"({horario_local}) E-mail enviado com sucesso! ")
+            time.sleep(5)
 
     except requests.exceptions.RequestException as e:
         print(f"Erro ao consultar API: {e}")
